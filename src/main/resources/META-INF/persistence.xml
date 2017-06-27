@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="com.sap.cloud.samples.ariba.discovery.rfx"
+		transaction-type="RESOURCE_LOCAL">
+		<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+		<class>com.sap.cloud.samples.ariba.discovery.rfx.persistency.entities.Event</class>
+		<class>com.sap.cloud.samples.ariba.discovery.rfx.persistency.entities.OpportunityAmt</class>
+		<class>com.sap.cloud.samples.ariba.discovery.rfx.persistency.entities.ProductCategory</class>
+		<class>com.sap.cloud.samples.ariba.discovery.rfx.persistency.entities.OpportunityAmtEnd</class>
+		<properties>
+			<property name="eclipselink.ddl-generation" value="create-or-extend-tables" />
+			<property name="eclipselink.logging.level" value="SEVERE" />
+		</properties>
+	</persistence-unit>
+</persistence>	

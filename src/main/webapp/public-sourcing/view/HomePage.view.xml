@@ -1,0 +1,62 @@
+<!DOCTYPE XML>
+<mvc:View height="100%" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+	controllerName="com.sap.cloud.ariba.public.sourcing.controller.HomePage"
+	displayBlock="true">
+
+	<Page enableScrolling="true" title="{i18n>homePageTitle}">
+		<content>
+			<Panel width="auto" class="sapUiResponsiveMargin">
+				<headerToolbar>
+					<Toolbar height="3rem">
+						<Title text="{i18n>panelTitle}" />
+						<Button icon="sap-icon://synchronize" press="onRefreshPress" />
+						<ToolbarSpacer />
+						<DateRangeSelection width="30%" change="onDatePickerPress"
+							placeholder="{i18n>dateRangeSelectionPlaceholder}" class="sapUiSmallMarginEnd" />
+					</Toolbar>
+				</headerToolbar>
+				<content>
+					<List itemPress="onItemPress" items="{/}" id="list">
+						<items>
+							<ObjectListItem title="{description}" type="Active"
+								press="onListItemPress" number="{i18n>idLabel} {postingId}">
+								<attributes>
+									<ObjectAttribute title="{i18n>buyerName}"
+										visible="{visible}" text="{buyerName}" />
+									<ObjectAttribute title="{i18n>publishedDateObjectAttributeTitle}"
+										visible="{visible}"
+										text="{	path: 'startDate', type: 'sap.ui.model.type.DateTime', formatOptions: {style: 'medium',source: {pattern: 'yyyy-MM-ddTHH:mm:ssZZZZ'}}}" />
+									<ObjectAttribute title="{i18n>closingDateObjectAttributeTitle}"
+										visible="{visible}"
+										text="{	path: 'responseDeadline', type: 'sap.ui.model.type.DateTime', formatOptions: {style: 'medium',source: {pattern: 'yyyy-MM-ddTHH:mm:ssZZZZ'}}}" />
+									<ObjectAttribute title="{i18n>awardDateObjectAttributeTitle}"
+										visible="{visible}"
+										text="{	path: 'awardDate', type: 'sap.ui.model.type.DateTime', formatOptions: {style: 'medium',source: {pattern: 'yyyy-MM-ddTHH:mm:ssZZZZ'}}}" />
+									<ObjectAttribute title="{i18n>shipToLocationObjectAttributeTitle}"
+										visible="{visible}" text="{serviceLocations}" />
+									<ObjectAttribute title="{i18n>categoryObjectAttributeTitle}"
+										visible="{= ${visible} &amp;&amp; ${categoriesStr} !== ''}"
+										text="{categoriesStr}" />
+									<ObjectAttribute title="{i18n>opportunityValueObjectAttributeTitle}"
+										visible="{= ${visible} &amp;&amp; ${opportunityAmt/upperEnd} !== null}"
+										text="{opportunityAmt/lowerEnd/amount}{opportunityAmt/lowerEnd/currency} to {opportunityAmt/upperEnd/amount}{opportunityAmt/upperEnd/currency}" />
+									<ObjectAttribute text="{i18n>linkObjectAttributeText}"
+										visible="{visible}" active="true" press="handleLinkObjectAttributePress" />
+								</attributes>
+							</ObjectListItem>
+						</items>
+					</List>
+				</content>
+			</Panel>
+
+		</content>
+		<footer>
+			<Toolbar>
+				<Image src="public-sourcing/rsc/ariba-logo.png" height="30px" />
+				<ToolbarSpacer />
+				<Link text="{i18n>termsAndConditionsLabel}" press="handleTermsAndConditionPress"
+					class="sapUiSmallMargin" />
+			</Toolbar>
+		</footer>
+	</Page>
+</mvc:View>

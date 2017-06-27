@@ -1,0 +1,5 @@
+<!DOCTYPE xml>
+<mvc:View height="100%" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+	controllerName="com.sap.cloud.ariba.public.sourcing.controller.App">
+	<App id="com.sap.cloud.ariba.public.sourcing.app" />
+</mvc:View>
