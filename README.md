@@ -5,13 +5,12 @@
 - [Overview](#overview)
 - [Technical Details](#technical_details)
 - [Prerequisites](#prerequisites)
-- [Create new Ariba service](#setup_ariba)
+- [Create a Discovery RFX Publication to External Marketplace Application](#setup_ariba)
 - [Build and Deploy the Application on SAP Cloud Platform](#build_deploy)
 	- [Using the SAP Cloud Platform Cockpit](#build_deploy_cockpit) 
 	- [Using the Eclipse IDE](#build_deploy_eclipse)
 - [Start the Public Sourcing Application](#start)
 - [Notes On Retrieving Sourcing Events](#notes)
-- [Create new Sourcing Project in Ariba](#ariba_sourcing_project)
 - [Additional Information](#additional_information)
 	- [Resources](#additional_information_resources)
 	- [License](#additional_information_license)
@@ -54,7 +53,7 @@ You need to:
 
 <a name="setup_ariba"/>
 
-## Create a Discovery RFX Publication to External Marketplace application in Ariba Developer Portal
+## Create a Discovery RFX Publication to External Marketplace Application in Ariba Developer Portal
 
 You already have an account for Ariba Developer Portal. Open the [guide](https://developer.ariba.com/api/guides) and follow the steps to create a new SAP Ariba Open APIs application that will be used against Ariba Open APIs sandbox environment.
 At the end, you should have an application key related to the SAP Ariba Open APIs application. You will need it in order to call the Discovery RFX Publication to External Marketplace API, the sandbox environment.
