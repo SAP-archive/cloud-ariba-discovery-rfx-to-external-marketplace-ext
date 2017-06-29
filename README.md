@@ -19,13 +19,13 @@
 
 ## Overview
 
-Ariba Public Sourcing is a sample extension application for [Ariba Network](https://www.ariba.com/) that runs on [SAP Cloud Platform](https://cloudplatform.sap.com/). The purpose of the application is to collect public sourcing events from Ariba Discovery via [Ariba Open APIs](https://developer.ariba.com/api) and to display them in an application running on SAP Cloud Platform.
+Ariba Public Sourcing is a sample extension application for [Ariba Network](https://www.ariba.com/) that runs on [SAP Cloud Platform](https://cloudplatform.sap.com/). The purpose of the application is to collect public sourcing events from Ariba Discovery via [SAP Ariba Open APIs](https://developer.ariba.com/api) and to display them in an application running on SAP Cloud Platform.
 
-The application uses the Discovery RFX Publication to External Marketplace API. It can be either run on the productive SAP Cloud Platform landscape, or the trial landscape. This guide explains how to download, build, deploy and configure the application on the SAP Cloud Platform trial landscape.
+The application uses the Discovery RFX Publication to External Marketplace API. You can run it either on enterprise, or trial [SAP Cloud Platform account](https://help.sap.com/viewer/65de2977205c403bbc107264b8eccf4b/Cloud/en-US/8ed4a705efa0431b910056c0acdbf377.html) in the [Neo environment](https://help.sap.com/viewer/65de2977205c403bbc107264b8eccf4b/Cloud/en-US/1a8ee4e7b27d4293af175f021db8ad9c.html). 
 
 These are the SAP Cloud Platform services and features in use:
-* [Connectivity Service](https://help.hana.ondemand.com/help/frameset.htm?e54cc8fbbb571014beb5caaf6aa31280.html) - the application uses the Connectivity Service to obtain connection to Ariba Open APIs.
-* [Persistence Service](https://help.hana.ondemand.com/help/frameset.htm?e7b3c275bb571014a910b3fb4329cf09.html) - the application uses the Persistence Service.
+* [Connectivity service](https://help.hana.ondemand.com/help/frameset.htm?e54cc8fbbb571014beb5caaf6aa31280.html) - the application uses the Connectivity service to obtain connection to SAP Ariba Open APIs.
+* [SAP HANA / SAP ASE service](https://help.sap.com/viewer/d4790b2de2f4429db6f3dff54e4d7b3a/Cloud/en-US/f6567e3b7334403b9b275426fbe4fb04.html)
 
 <a name="technical_details"/>
 
@@ -36,9 +36,9 @@ The events could be either fetched manually through the UI or automatically with
 
 To use this extension application, you need to:
 
-1. Create an Ariba Open APIs application in [Ariba Developer Portal](https://developer.ariba.com/api).
+1. Create an SAP Ariba Open APIs application in [Ariba Developer Portal](https://developer.ariba.com/api).
 2. Build and deploy the Java extension application on SAP Cloud Platform.
-3. Configure the Java application to use the Ariba Open APIs application.
+3. Configure the Java application to use the SAP Ariba Open APIs application.
 4. Start the Java extension application.
 
 <a name="prerequisites"/>
@@ -47,7 +47,7 @@ To use this extension application, you need to:
 
 You need to:
 * have an account for [Ariba Developer Portal](https://developer.ariba.com/api)
-* have an [SAP Cloud Platform developer account](https://help.hana.ondemand.com/help/frameset.htm?e4986153bb571014a2ddc2fdd682ee90.html)
+* have an [SAP Cloud Platform trial account](https://help.sap.com/viewer/65de2977205c403bbc107264b8eccf4b/Cloud/en-US/65d74d39cb3a4bf8910cd36ec54d2b99.html)
 * download or clone the project with Git
 * have set up [Maven 3.0.x](http://maven.apache.org/docs/3.0.5/release-notes.html)
 
@@ -55,21 +55,21 @@ You need to:
 
 ## Create a Discovery RFX Publication to External Marketplace Application in Ariba Developer Portal
 
-You already have an account for Ariba Developer Portal. Open the [guide](https://developer.ariba.com/api/guides) and follow the steps to create a new SAP Ariba Open APIs application that will be used against Ariba Open APIs sandbox environment.
+You already have an account for Ariba Developer Portal. Open the [guide](https://developer.ariba.com/api/guides) and follow the steps to create a new SAP Ariba Open APIs application that will be used against SAP Ariba Open APIs sandbox environment.
 At the end, you should have an application key related to the SAP Ariba Open APIs application. You will need it in order to call the Discovery RFX Publication to External Marketplace API, the sandbox environment.
 
 >Note: when working against Open API sandbox environment, you will have only an application key. When you enable your SAP Ariba Open APIs application for production usage, you will get an OAuth access token as well. In that case, just add the access token to the Java application destination.
 
->Note: to enable the Ariba Open APIs application for production usage, follow the guide on the [Ariba Open APIs Developer Portal](https://developer.ariba.com/api/guides).
+>Note: to enable the SAP Ariba Open APIs application for production usage, follow the guide on the [SAP Ariba Open APIs Developer Portal](https://developer.ariba.com/api/guides).
 
 <a name="build_deploy"/>
 
 ## Build and Deploy the Application on SAP Cloud Platform
 
-You have already downloaded or cloned the Public Sourcing extension application. Now you have to build the application and deploy it on the SAP Cloud Platform. There are two paths you can choose from: 
+You have already downloaded or cloned the Public Sourcing extension application. Now you have to build the application and deploy it on the SAP Cloud Platform. To do that, use one of the following tools: 
 
-* using the SAP Cloud Platform Cockpit
-* using the Eclipse IDE
+* SAP Cloud Platform Cockpit
+* Eclipse IDE
 
 <a name="build_deploy_cockpit"/>
 
@@ -82,23 +82,23 @@ You have already downloaded or cloned the Public Sourcing extension application.
 
         mvn clean install
 
-The produced WAR file `ROOT.war` under target sub-folder `cloud-ariba-discovery-rfx-to-external-marketplace-ext\target` is ready to be deployed.
+The generated WAR file `ROOT.war` under target sub-folder `cloud-ariba-discovery-rfx-to-external-marketplace-ext\target` is ready to be deployed.
 
 #### Deploy the Application Using the Cockpit
 
-You have to [deploy](https://help.hana.ondemand.com/help/frameset.htm?abded969628240259d486c4b29b3948c.html) the `ROOT.war` file as a Java application via SAP Cloud Platform Cockpit. Use Java Web Tomcat 8 as a runtime option.
+You have to [deploy](https://help.sap.com/viewer/65de2977205c403bbc107264b8eccf4b/Cloud/en-US/abded969628240259d486c4b29b3948c.html) the `ROOT.war` file as a Java application via SAP Cloud Platform Cockpit. Use Java Web Tomcat 8 as a runtime option.
 
 <a name="build_deploy_eclipse"/>
 
 ### Using the Eclipse IDE
 
-When using the Eclipse IDE you can take a look at the structure and code of the application. You have to import the application as an existing Maven project and build it with Maven using `clean install`. You also have to choose Java Web Tomcat 8 as a runtime option.
+When using the Eclipse IDE, you can take a look at the structure and code of the application. You have to import the application as an existing Maven project and build it with Maven using `clean install`. You also have to choose Java Web Tomcat 8 as a runtime option.
 
 #### Prerequisites
 
 * [JDK 8 or later](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 * [Eclipse IDE for Java EE Developers](https://eclipse.org/downloads/)
-* [SAP Cloud Platform Tools](https://tools.hana.ondemand.com/#cloud) ([Installation help](https://help.hana.ondemand.com/help/frameset.htm?e815ca4cbb5710148376c549fd74c0db.html))
+* [SAP Cloud Platform Tools](https://tools.hana.ondemand.com/#cloud) ([Installing the SDK for Java Development](https://help.sap.com/viewer/65de2977205c403bbc107264b8eccf4b/Cloud/en-US/7613843c711e1014839a8273b0e91070.html))
 
 #### Build the Application from Eclipse
 
@@ -132,7 +132,7 @@ To deploy the application from Eclipse IDE, follow these steps:
 ## Create a Destination
 
 
-You need to [create an HTTP destination on the SAP Cloud Platform](https://help.hana.ondemand.com/help/frameset.htm?1e110da0ddd8453aaf5aed2485d84f25.html).
+You need to [create an HTTP destination on the SAP Cloud Platform](https://help.sap.com/viewer/cca91383641e40ffbe03bdc78f00f681/Cloud/en-US/e520383cbb571014858bc5d52295f433.html).
 
 
    Use the following required properties:
@@ -155,7 +155,7 @@ You need to [create an HTTP destination on the SAP Cloud Platform](https://help.
 
 ## Start the Application
 
-After creating the destination, [start (or restart in case the application is already started) the application via the Cloud Cockpit](https://help.hana.ondemand.com/help/frameset.htm?7612f03c711e1014839a8273b0e91070.html). 
+After creating the destination, [start (or restart in case the application is already started) the application via the cloud cockpit](https://help.sap.com/viewer/65de2977205c403bbc107264b8eccf4b/Cloud/en-US/7612f03c711e1014839a8273b0e91070.html). 
 
 <a name="notes"/>
 
@@ -170,8 +170,8 @@ The automatic retrieving of sourcing events from Ariba is commented out in the s
 <a name="additional_information_resources"/>
 
 ### Resources
-* SAP Cloud Documentation - https://help.hana.ondemand.com/
-* SAP Ariba OpenAPI - https://developer.ariba.com/api
+* SAP Cloud Documentation - https://help.sap.com/viewer/product/CP/Cloud/en-US
+* SAP Ariba Open APIs - https://developer.ariba.com/api
 
 <a name="additional_information_license"/>
 
