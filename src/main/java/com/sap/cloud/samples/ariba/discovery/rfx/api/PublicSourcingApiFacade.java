@@ -3,8 +3,10 @@ package com.sap.cloud.samples.ariba.discovery.rfx.api;
 import java.io.IOException;
 import java.text.MessageFormat;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -91,7 +93,14 @@ public class PublicSourcingApiFacade {
 					retrieveEventsResponseStatusCode);
 
 			if (retrieveEventsResponseStatusCode == HttpStatus.SC_OK) {
-				result = HttpResponseUtils.convertHttpResponse(retrieveEventsResponse.getEntity(), EventsDto.class);
+				HttpEntity retrieveEventsResponseEntity = retrieveEventsResponse.getEntity();
+				if (retrieveEventsResponseEntity != null) {
+					try {
+						result = HttpResponseUtils.convertHttpResponse(retrieveEventsResponseEntity, EventsDto.class);
+					} finally {
+						EntityUtils.consume(retrieveEventsResponseEntity);
+					}
+				}
 			}
 
 		} catch (IOException | HttpResponseException e) {

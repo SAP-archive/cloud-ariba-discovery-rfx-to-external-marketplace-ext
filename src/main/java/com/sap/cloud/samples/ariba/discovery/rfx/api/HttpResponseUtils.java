@@ -83,7 +83,6 @@ public class HttpResponseUtils {
 		try {
 			logger.debug(DEBUG_CONVERTING_HTTP_ENTITY);
 			result = gson.fromJson(EntityUtils.toString(entity, StandardCharsets.UTF_8), cls);
-			EntityUtils.consume(entity);
 		} catch (ParseException | IOException e) {
 			String errorMessage = MessageFormat
 					.format(ERROR_PROBLEM_OCCURED_WHILE_CONVERTING_RESPONSE_ENTITY_TO_CLASS_MESSAGE, cls.getName());
