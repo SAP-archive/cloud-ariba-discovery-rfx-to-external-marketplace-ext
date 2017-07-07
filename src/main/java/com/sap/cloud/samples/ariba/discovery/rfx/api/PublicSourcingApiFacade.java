@@ -18,8 +18,8 @@ import com.sap.cloud.samples.ariba.discovery.rfx.dtos.EventsDto;
  */
 public class PublicSourcingApiFacade {
 
-	private static final String RETRIEVE_EVENTS_PATH = "/api/discoveryrfx/v1/sandbox/site/{0}/events/?rsqlfilter=(count=={1})";
-	private static final String ACKNOWLEDGE_EVENTS_PATH = "/api/discoveryrfx/v1/sandbox/action/site/{0}/events/{1}/acknowledge";
+	private static final String RETRIEVE_EVENTS_PATH = "/site/{0}/events/?rsqlfilter=(count=={1})";
+	private static final String ACKNOWLEDGE_EVENTS_PATH = "/action/site/{0}/events/{1}/acknowledge";
 	private static final String DEBUG_ACKNOWLEDGING_EVENT_MESSAGE = "Acknowledging event [{}]...";
 	private static final String DEBUG_EVENT_ACKNOWLEDGED_MESSAGE = "Acknowledging event [{}] done.";
 	private static final String DEBUG_RETRIEVING_EVENTS_MESSAGE = "Retrieving [{}] events...";
