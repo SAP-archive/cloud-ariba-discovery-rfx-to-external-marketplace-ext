@@ -37,22 +37,18 @@ public class OpenApisEndpoint {
 	private static final Logger logger = LoggerFactory.getLogger(OpenApisEndpoint.class);
 
 	private String baseUri;
-	private Header bearerAuthorizationHeader;
 	private Header apikeyHeader;
-	
+
 	/**
 	 * Constructor.
 	 * 
 	 * @param baseUri
 	 *            base URI that will be called.
-	 * @param accessToken
-	 *            OAuth access token that will be used when calling the API.
 	 * @param apiKey
 	 *            API key that will be used when calling the API.
 	 */
-	public OpenApisEndpoint(String baseUri, String accessToken, String apiKey) {
+	public OpenApisEndpoint(String baseUri, String apiKey) {
 		this.baseUri = baseUri;
-		this.bearerAuthorizationHeader = getBearerAuthorizationHeader(accessToken);
 		this.apikeyHeader = getApikeyHeader(apiKey);
 	}
 	
@@ -65,19 +61,21 @@ public class OpenApisEndpoint {
 	}
 
 	/**
-	 * Performs HTTP Get request with OAuth authentication for the endpoint with
-	 * the given path.
+	 * Performs HTTP Get request with OAuth authentication for the end point
+	 * with the given path.
 	 * 
 	 * @param path
 	 *            the path to be called.
+	 * @param accessToken
+	 *            OAuth access token that will be used when calling the API.
 	 * @return the CloseableHttpResponse object.
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public CloseableHttpResponse httpGet(String path) throws ClientProtocolException, IOException {
+	public CloseableHttpResponse httpGet(String path, String accessToken) throws ClientProtocolException, IOException {
 		logger.debug(DEBUG_EXECUTING_HTTP_GET_FOR, baseUri, path);
-		
-		HttpGet httpGet = createHttpGet(baseUri + path);
+
+		HttpGet httpGet = createHttpGet(baseUri + path, accessToken);
 
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		CloseableHttpResponse response = httpClient.execute(httpGet);
@@ -85,10 +83,12 @@ public class OpenApisEndpoint {
 		logger.debug(DEBUG_EXECUTED_HTTP_GET_FOR, baseUri, path);
 		return response;
 	}
-	
-	private HttpGet createHttpGet(String uri) {
+
+	private HttpGet createHttpGet(String uri, String accessToken) {
 		HttpGet httpGet = new HttpGet(uri);
-		httpGet.addHeader(bearerAuthorizationHeader);
+		if(accessToken != null) {
+			httpGet.addHeader(getBearerAuthorizationHeader(accessToken));
+		}
 		httpGet.addHeader(apikeyHeader);
 
 		return httpGet;
@@ -100,14 +100,16 @@ public class OpenApisEndpoint {
 	 * 
 	 * @param path
 	 *            the path to be called.
+	 * @param accessToken
+	 *            OAuth access token that will be used when calling the API.
 	 * @return the CloseableHttpResponse object.
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public CloseableHttpResponse httpPost(String path) throws ClientProtocolException, IOException {
+	public CloseableHttpResponse httpPost(String path, String accessToken) throws ClientProtocolException, IOException {
 		logger.debug(DEBUG_EXECUTING_HTTP_POST_FOR, baseUri, path);
-		
-		HttpPost httpPost = createHttpPost(baseUri + path);
+
+		HttpPost httpPost = createHttpPost(baseUri + path, accessToken);
 
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		CloseableHttpResponse response = httpClient.execute(httpPost);
@@ -122,16 +124,19 @@ public class OpenApisEndpoint {
 	 * 
 	 * @param path
 	 *            the path to be called.
+	 * @param accessToken
+	 *            OAuth access token that will be used when calling the API.
 	 * @param jsonContent
 	 *            the JSON content to be posted.
 	 * @return the CloseableHttpResponse object.
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public CloseableHttpResponse httpPost(String path, String jsonContent) throws ClientProtocolException, IOException {
+	public CloseableHttpResponse httpPost(String path, String accessToken, String jsonContent)
+			throws ClientProtocolException, IOException {
 		logger.debug(DEBUG_EXECUTING_HTTP_POST_FOR_WITH_JSON_CONTENT, baseUri, path, jsonContent);
-		
-		HttpPost httpPost = createHttpPost(baseUri + path);
+
+		HttpPost httpPost = createHttpPost(baseUri + path, accessToken);
 
 		StringEntity input = new StringEntity(jsonContent, StandardCharsets.UTF_8);
 		input.setContentType(APPLICATION_JSON);
@@ -144,9 +149,9 @@ public class OpenApisEndpoint {
 		return response;
 	}
 
-	private HttpPost createHttpPost(String uri) {
+	private HttpPost createHttpPost(String uri, String accessToken) {
 		HttpPost httpPost = new HttpPost(uri);
-		httpPost.addHeader(bearerAuthorizationHeader);
+		httpPost.addHeader(getBearerAuthorizationHeader(accessToken));
 		httpPost.addHeader(apikeyHeader);
 
 		return httpPost;

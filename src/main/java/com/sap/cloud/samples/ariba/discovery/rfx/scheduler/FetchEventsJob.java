@@ -6,6 +6,7 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.sap.cloud.samples.ariba.discovery.rfx.connectivity.OpenApisOauthServerDestination;
 import com.sap.cloud.samples.ariba.discovery.rfx.connectivity.PublicSourcingDestination;
 
 /**
@@ -39,8 +40,7 @@ public class FetchEventsJob implements Job {
 	private void processEvents(String aribaDestinationName) throws EventProcessingException {
 		logger.debug(DEBUG_FETCH_STARTING_MESSAGE);
 
-		PublicSourcingEventsProcessor eventsProcessor = new PublicSourcingEventsProcessor(
-				new PublicSourcingDestination(aribaDestinationName));
+		PublicSourcingEventsProcessor eventsProcessor = PublicSourcingEventsProcessor.initilizeEventProcessorInstance();
 		eventsProcessor.processEvents();
 
 		logger.debug(DEBUG_FETCH_DONE_MESSAGE);

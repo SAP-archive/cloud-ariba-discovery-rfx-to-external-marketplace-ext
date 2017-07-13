@@ -10,6 +10,7 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.sap.cloud.samples.ariba.discovery.rfx.dtos.AccessTokenDto;
 import com.sap.cloud.samples.ariba.discovery.rfx.dtos.EventsDto;
 
 /**
@@ -26,6 +27,9 @@ public class PublicSourcingApiFacade {
 	private static final String DEBUG_EVENTS_RETRIEVED_MESSAGE = "Events retrieved: [{}]";
 	private static final String DEBUG_CALLING_MESSAGE = "Calling [{}]...";
 	private static final String DEBUG_CALLING_URI_RETURNED_STATUS_MESSAGE = "Calling [{}] returned status: {}";
+	private static final String DEBUG_RETRIEVING_ACCESS_TOKEN_MESSAGE = "Retrieving OAuth access token...";
+	private static final String DEBUG_RETRIEVED_ACCESS_TOKEN_MESSAGE = "Retrieved OAuth access token.";
+	private static final String DEBUG_NO_OAUTH_SERVER_IS_CONFIGURED = "No OAuth Server destination is configured, assuming sandbox environment, OAuth request will be skipped.";
 
 	private static final String ERROR_PROBLEM_OCCURED_WHILE_CALLING_MESSAGE = "Problem occured while calling [{0}].";
 
@@ -34,6 +38,7 @@ public class PublicSourcingApiFacade {
 	private final String siteId;
 
 	private final OpenApisEndpoint openApisEndpoint;
+	private final OpenAPIsOauthServerFacade openAPIsOauthServerFacade;
 
 	private static final Logger logger = LoggerFactory.getLogger(PublicSourcingApiFacade.class);
 
@@ -44,15 +49,17 @@ public class PublicSourcingApiFacade {
 	 *            the URL of the Ariba OpenAPIs environment to be called.
 	 * @param siteId
 	 *            the site ID.
-	 * @param accessToken
-	 *            OAuth access token to be used for the API calls.
 	 * @param apiKey
 	 *            API key to be used for the API calls.
+	 * @param openAPIsOauthServerFacade
+	 *            SAP Ariba Open APIs OAuth Server facade.
 	 */
-	public PublicSourcingApiFacade(String aribaOpenApisEnvironmentUrl, String siteId, String accessToken,
-			String apiKey) {
+	public PublicSourcingApiFacade(String aribaOpenApisEnvironmentUrl, String siteId, String apiKey,
+			OpenAPIsOauthServerFacade openAPIsOauthServerFacade) {
 		this.siteId = siteId;
-		this.openApisEndpoint = new OpenApisEndpoint(aribaOpenApisEnvironmentUrl, accessToken, apiKey);
+
+		this.openApisEndpoint = new OpenApisEndpoint(aribaOpenApisEnvironmentUrl, apiKey);
+		this.openAPIsOauthServerFacade = openAPIsOauthServerFacade;
 	}
 
 	/**
@@ -80,12 +87,21 @@ public class PublicSourcingApiFacade {
 	 */
 	public EventsDto retrieveEvents(int count) throws UnsuccessfulOperationException {
 		logger.debug(DEBUG_RETRIEVING_EVENTS_MESSAGE, count);
+		AccessTokenDto accessToken = null;
+		if(openAPIsOauthServerFacade != null) {
+			logger.debug(DEBUG_RETRIEVING_ACCESS_TOKEN_MESSAGE);
+			accessToken = openAPIsOauthServerFacade.retrieveAccessToken();
+			logger.debug(DEBUG_RETRIEVED_ACCESS_TOKEN_MESSAGE);
+		} else {
+			logger.debug(DEBUG_NO_OAUTH_SERVER_IS_CONFIGURED);
+		}
 
 		EventsDto result = null;
 		String retrieveEventsPath = MessageFormat.format(RETRIEVE_EVENTS_PATH, siteId, count);
 
 		logger.debug(DEBUG_CALLING_MESSAGE, retrieveEventsPath);
-		try (CloseableHttpResponse retrieveEventsResponse = openApisEndpoint.httpGet(retrieveEventsPath)) {
+		try (CloseableHttpResponse retrieveEventsResponse = openApisEndpoint.httpGet(retrieveEventsPath,
+				accessToken != null ? accessToken.getAccessToken() : null)) {
 			int retrieveEventsResponseStatusCode = HttpResponseUtils.validateHttpStatusResponse(retrieveEventsResponse,
 					HttpStatus.SC_OK, HttpStatus.SC_NO_CONTENT);
 
@@ -127,12 +143,19 @@ public class PublicSourcingApiFacade {
 	 */
 	public void acknowledgeEvent(String eventId) throws UnsuccessfulOperationException {
 		logger.debug(DEBUG_ACKNOWLEDGING_EVENT_MESSAGE, eventId);
+		AccessTokenDto accessToken = null;
+		if(openAPIsOauthServerFacade != null){
+			logger.debug(DEBUG_RETRIEVING_ACCESS_TOKEN_MESSAGE);
+			accessToken = openAPIsOauthServerFacade.retrieveAccessToken();
+			logger.debug(DEBUG_RETRIEVED_ACCESS_TOKEN_MESSAGE);			
+		}
 
 		String acknowledgeEventUrl = MessageFormat.format(ACKNOWLEDGE_EVENTS_PATH, siteId, eventId);
 
 		logger.debug(DEBUG_CALLING_MESSAGE, acknowledgeEventUrl);
 
-		try (CloseableHttpResponse acknowledgeEventResponse = openApisEndpoint.httpPost(acknowledgeEventUrl)) {
+		try (CloseableHttpResponse acknowledgeEventResponse = openApisEndpoint.httpPost(acknowledgeEventUrl,
+				accessToken!= null ? accessToken.getAccessToken():null)) {
 
 			int acknowledgeEventsResponseStatusCode = HttpResponseUtils
 					.validateHttpStatusResponse(acknowledgeEventResponse, HttpStatus.SC_OK);

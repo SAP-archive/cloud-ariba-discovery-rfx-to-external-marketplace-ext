@@ -10,7 +10,6 @@ public class PublicSourcingDestination extends Destination {
 	public static final String NAME = "ariba-public-sourcing";
 
 	private static final String SITE_ID = "SiteId";
-	private static final String API_ACCESS_TOKEN = "AccessToken";
 	private static final String API_KEY = "ApiKey";
 	private static final String OPEN_API_ENVIRONMENT_URL = "URL";
 	private static final String JOB_INTERVAL_IN_SECONDS = "JobIntervalInSeconds";
@@ -35,10 +34,6 @@ public class PublicSourcingDestination extends Destination {
 
 	public String getSiteId() {
 		return getPropertyValue(SITE_ID);
-	}
-
-	public String getAccessToken() {
-		return getPropertyValue(API_ACCESS_TOKEN);
 	}
 
 	public String getApiKey() {

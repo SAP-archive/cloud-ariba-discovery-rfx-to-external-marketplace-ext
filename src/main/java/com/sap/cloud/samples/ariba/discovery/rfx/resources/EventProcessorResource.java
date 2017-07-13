@@ -9,6 +9,7 @@ import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.sap.cloud.samples.ariba.discovery.rfx.connectivity.OpenApisOauthServerDestination;
 import com.sap.cloud.samples.ariba.discovery.rfx.connectivity.PublicSourcingDestination;
 import com.sap.cloud.samples.ariba.discovery.rfx.scheduler.PublicSourcingEventsProcessor;
 
@@ -44,9 +45,8 @@ public class EventProcessorResource {
 		Response response = null;
 
 		try {
-
-			PublicSourcingEventsProcessor eventsProcessor = new PublicSourcingEventsProcessor(
-					new PublicSourcingDestination(PublicSourcingDestination.NAME));
+			
+			PublicSourcingEventsProcessor eventsProcessor = PublicSourcingEventsProcessor.initilizeEventProcessorInstance();
 			eventsProcessor.processEvents();
 
 			response = Response.status(Response.Status.OK).build();
