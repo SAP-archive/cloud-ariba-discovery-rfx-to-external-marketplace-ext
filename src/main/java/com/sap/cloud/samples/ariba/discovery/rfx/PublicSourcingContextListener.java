@@ -48,12 +48,13 @@ public class PublicSourcingContextListener implements ServletContextListener {
 
 	private void scheduleEventsRetrieving() throws SchedulerException {
 		logger.debug(DEBUG_RETRIEVING_DESTINATION, PublicSourcingDestination.NAME);
-		PublicSourcingDestination aribaDestination = new PublicSourcingDestination(PublicSourcingDestination.NAME);
+		PublicSourcingDestination aribaPublicSourcingDestination = new PublicSourcingDestination(PublicSourcingDestination.NAME);
+		aribaPublicSourcingDestination.loadDestinationProperties();
 		logger.debug(DEBUG_RETRIEVED_DESTINATION, PublicSourcingDestination.NAME);
 
 		logger.debug(DEBUG_INITIALIZING_SCHEDULER);
 		EventsScheduler eventsScheduler = EventsScheduler.getInstance();
-		eventsScheduler.startAndSchedule(aribaDestination.getJobIntervalSeconds());
+		eventsScheduler.startAndSchedule(aribaPublicSourcingDestination.getJobIntervalSeconds());
 		logger.debug(DEBUG_SCHEDULER_INITIALIZED);
 	}
 

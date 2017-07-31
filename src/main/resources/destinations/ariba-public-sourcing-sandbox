@@ -1,0 +1,7 @@
+Type=HTTP
+Name=ariba-public-sourcing
+URL=<SAP Ariba OpenAPIs Environment URL e.g. https://openapi.ariba.com/api/discoveryrfx/v1/sandbox>
+Authentication=NoAuthentication
+JobIntervalInSeconds=180
+SiteId=<The unique site ID. Enter random string when using sandbox environment>
+ApiKey=<SAP Ariba Open APIs application API key>

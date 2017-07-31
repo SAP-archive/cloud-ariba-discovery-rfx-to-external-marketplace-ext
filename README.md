@@ -36,7 +36,7 @@ The events could be either fetched manually through the UI or automatically with
 
 To use this extension application, you need to:
 
-1. Register an SAP Ariba Open APIs application in [Ariba Developer Portal](https://developer.ariba.com/api).
+1. Register an SAP Ariba Open APIs application in [SAP Ariba Developer Portal](https://developer.ariba.com/api).
 2. Promote your registered application for production access. (optional, not required for working against SAP Ariba Open APIs sandbox environment)
 3. Build and deploy the Java extension application on SAP Cloud Platform.
 4. Configure the Java application connectivity.
@@ -56,12 +56,12 @@ You need to:
 
 ## Register a Discovery RFX Publication to External Marketplace Application in SAP Ariba Developer Portal
 
-You already have an account for Ariba Developer Portal. Open the [guide](https://developer.ariba.com/api/guides) and follow the steps to register a new SAP Ariba Open APIs application. that will be used against SAP Ariba Open APIs sandbox environment.
+You already have an account for SAP Ariba Developer Portal. Open the [guide](https://developer.ariba.com/api/guides) and follow the steps to register a new SAP Ariba Open APIs application that will be used against SAP Ariba Open APIs sandbox environment.
 At the end, you should have an application key related to the SAP Ariba Open APIs application. You will need it in order to call the Discovery RFX Publication to External Marketplace API, the sandbox environment.
 
 > *Production access:*
 When you want to work against production environment you should first [promote your application for production access](https://developer.ariba.com/api/guides).
-At the end, you will have an API key and OAuth client related to the registered SAP Ariba Open APIs application. You  need them in order to call the Discovery RFX Publication to External Marketplace API production environment.
+At the end, besides the application key, you will have a set of credentials (Service Provider user and Service Provider password) related to the registered SAP Ariba Open APIs application. You need them in order to call the Discovery RFX Publication to External Marketplace API production environment.
 
 
 <a name="build_deploy"/>
@@ -136,20 +136,24 @@ To deploy the application from Eclipse IDE, follow these steps:
 
 <a name="configure"/>
 
-## Create Destination(s)
+## Create Destination
 
 
-You need to create HTTP destination(s) on the SAP Cloud Platform:
+You need to create HTTP destination on the SAP Cloud Platform:
 * [Using Eclipse](https://help.sap.com/viewer/cca91383641e40ffbe03bdc78f00f681/Cloud/en-US/e520383cbb571014858bc5d52295f433.html)
 * [Using SAP Cloud Platform cockpit](https://help.sap.com/viewer/cca91383641e40ffbe03bdc78f00f681/Cloud/en-US/e520383cbb571014858bc5d52295f433.html)
 
-##### SAP Ariba Open APIs Destination
 
+You configure the destination according to the SAP Ariba Open APIs environment. 
+
+>Note: you can switch the environments by updating the created destination. You can find sample destinations in the resources folder.
+
+##### SAP Ariba Open APIs sandbox environment
    Use the following required properties:
 
                 Type: HTTP
                 Name: ariba-public-sourcing
-                URL: <SAP Ariba OpenAPIs Environment Url>
+                URL: <SAP Ariba OpenAPIs sandbox environment URL>
                 Authentication: NoAuthentication
 
    And add four additional properties:
@@ -158,19 +162,21 @@ You need to create HTTP destination(s) on the SAP Cloud Platform:
                 SiteId: <The unique site id. Enter random string in case of sandbox environment>
                 ApiKey: <SAP Ariba Open APIs application API key>
 
-##### SAP Ariba Open APIs OAuth Server Destination
-(skip this step if you are working against SAP Ariba Open APIs sandbox environment)
-
+##### SAP Ariba Open APIs production environment
    Use the following required properties:
 
                 Type: HTTP
-                Name: ariba-open-apis-oauth-server
-                URL: <SAP Ariba OpenAPIs OAuth Server URL e.g. https://api.ariba.com/v2/oauth/token>
+                Name: ariba-public-sourcing
+                URL: <SAP Ariba OpenAPIs production environment URL>
                 Authentication: BasicAuthentication
-                User=<SAP Ariba OpenAPIs registered application OAuth Client ID>
-                Password=<SAP Ariba Open APIs registered application OAuth Client Secret>
+                User: <SAP Ariba Open APIs Service Provider User>
+                Password: <SAP Ariba Open APIs Service Provider Password>
 
->Note: There are sample destinations in the project's resources folder.
+   And add four additional properties:
+
+                JobIntervalInSeconds: <How often will the Discovery RFX Publication to External Marketplace API be called>
+                SiteId: <The unique site id>
+                ApiKey: <SAP Ariba Open APIs application API key>
 
 <a name="start"/>
 
@@ -182,7 +188,7 @@ After creating the destination, if you are working against SAP Cloud Platform [s
 
 ## Notes On Retrieving Sourcing Events
 
-The automatic retrieving of sourcing events from Ariba is commented out in the source code of the Java application and the retrieving is done manually through the UI. If you prefer, you could turn on the automatic retrieving by uncommenting the related logic in PublicSourcingContextListener.java.
+The automatic retrieving of sourcing events from SAP Ariba is commented out in the source code of the Java application and the retrieving is done manually through the UI. If you prefer, you could turn on the automatic retrieving by uncommenting the related logic in PublicSourcingContextListener.java.
 
 <a name="additional_information"/>
 

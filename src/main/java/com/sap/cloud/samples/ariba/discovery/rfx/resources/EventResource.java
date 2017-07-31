@@ -16,7 +16,7 @@ import com.sap.cloud.samples.ariba.discovery.rfx.persistency.entities.Event;
 import com.sap.cloud.samples.ariba.discovery.rfx.utils.AribaModelMapper;
 
 /**
- * REST endpoint for retrieving and deleting events.
+ * REST end point for retrieving and deleting events.
  *
  */
 @Path("events")

@@ -9,12 +9,10 @@ import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sap.cloud.samples.ariba.discovery.rfx.connectivity.OpenApisOauthServerDestination;
-import com.sap.cloud.samples.ariba.discovery.rfx.connectivity.PublicSourcingDestination;
 import com.sap.cloud.samples.ariba.discovery.rfx.scheduler.PublicSourcingEventsProcessor;
 
 /**
- * REST endpoint for processing of events manually. The event processing
+ * REST end point for processing of events manually. The event processing
  * includes calling Discovery RFX Publication to External Marketplace API and
  * persisting all new events.
  * 
@@ -45,10 +43,8 @@ public class EventProcessorResource {
 		Response response = null;
 
 		try {
-			
-			PublicSourcingEventsProcessor eventsProcessor = PublicSourcingEventsProcessor.initilizeEventProcessorInstance();
+			PublicSourcingEventsProcessor eventsProcessor = PublicSourcingEventsProcessor.createEventProcessor();
 			eventsProcessor.processEvents();
-
 			response = Response.status(Response.Status.OK).build();
 		} catch (Exception e) {
 			logger.error(ERROR_PROCESSING_EVENTS, e);

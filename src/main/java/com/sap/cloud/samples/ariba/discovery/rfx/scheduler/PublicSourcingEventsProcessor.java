@@ -5,10 +5,8 @@ import java.text.MessageFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sap.cloud.samples.ariba.discovery.rfx.api.OpenAPIsOauthServerFacade;
 import com.sap.cloud.samples.ariba.discovery.rfx.api.PublicSourcingApiFacade;
 import com.sap.cloud.samples.ariba.discovery.rfx.api.UnsuccessfulOperationException;
-import com.sap.cloud.samples.ariba.discovery.rfx.connectivity.OpenApisOauthServerDestination;
 import com.sap.cloud.samples.ariba.discovery.rfx.connectivity.PublicSourcingDestination;
 import com.sap.cloud.samples.ariba.discovery.rfx.daos.EventDao;
 import com.sap.cloud.samples.ariba.discovery.rfx.dtos.EventDto;
@@ -35,21 +33,47 @@ public class PublicSourcingEventsProcessor {
 	private static final String ERROR_FAILED_TO_PROCESS_EVENT_WITH_EVENT_ID_MESSAGE = "Failed to process event with event id [{0}].";
 	private static final String ERROR_PROBLEM_OCUURED_WHILE_PROCESSING_EVENTS = "Problem ocuured while processing events: {0}";
 
-	private PublicSourcingApiFacade aribaPublicSourcingFacade;
+	private PublicSourcingApiFacade publicSourcingFacade;
 	private EventDao eventDao;
 
 	private static final Logger logger = LoggerFactory.getLogger(PublicSourcingEventsProcessor.class);
 
 	private PublicSourcingEventsProcessor(PublicSourcingApiFacade aribaPublicSourcingFacade) {
-		this.aribaPublicSourcingFacade = aribaPublicSourcingFacade;
+		this.publicSourcingFacade = aribaPublicSourcingFacade;
 		this.eventDao = new EventDao();
+	}
+
+	public static PublicSourcingEventsProcessor createEventProcessor() {
+		PublicSourcingApiFacade aribaPublicSourcingFacade = createPublicSourcingFacade();
+
+		return new PublicSourcingEventsProcessor(aribaPublicSourcingFacade);
+	}
+
+	private static PublicSourcingApiFacade createPublicSourcingFacade() {
+		PublicSourcingApiFacade publicSourcingApiFacade = null;
+
+		PublicSourcingDestination aribaPublicSourcingDestination = new PublicSourcingDestination(
+				PublicSourcingDestination.NAME);
+		aribaPublicSourcingDestination.loadDestinationProperties();
+
+		if (aribaPublicSourcingDestination.isBasicAuthentication()) {
+			publicSourcingApiFacade = new PublicSourcingApiFacade(aribaPublicSourcingDestination.getAribaUrl(),
+					aribaPublicSourcingDestination.getSiteId(), aribaPublicSourcingDestination.getServiceProviderUser(),
+					aribaPublicSourcingDestination.getServiceProviderPassword(),
+					aribaPublicSourcingDestination.getApiKey());
+		} else {
+			publicSourcingApiFacade = new PublicSourcingApiFacade(aribaPublicSourcingDestination.getAribaUrl(),
+					aribaPublicSourcingDestination.getSiteId(), aribaPublicSourcingDestination.getApiKey());
+		}
+
+		return publicSourcingApiFacade;
 	}
 
 	public void processEvents() throws EventProcessingException {
 		logger.debug(DEBUG_STARTED_PROCESSING_EVENTS);
 
 		try {
-			EventsDto retrievedEventsDtos = aribaPublicSourcingFacade.retrieveEvents();
+			EventsDto retrievedEventsDtos = publicSourcingFacade.retrieveEvents();
 			if (retrievedEventsDtos != null && retrievedEventsDtos.getEvents() != null) {
 				EventDto[] eventsDtos = retrievedEventsDtos.getEvents();
 				logger.debug(DEBUG_PROCESSING_EVENTS, eventsDtos.length);
@@ -97,45 +121,9 @@ public class PublicSourcingEventsProcessor {
 	private void acknowledgeEvent(EventDto eventDto) throws UnsuccessfulOperationException {
 		logger.debug(DEBUG_ACKNOWLEDGING_EVENT_WITH_EVENT_ID, eventDto.getEventId());
 
-		aribaPublicSourcingFacade.acknowledgeEvent(eventDto.getEventId());
+		publicSourcingFacade.acknowledgeEvent(eventDto.getEventId());
 
 		logger.debug(DEBUG_ACKNOWLEDGED_EVENT_WITH_EVENT_ID, eventDto.getEventId());
 	}
-	
-	public static PublicSourcingEventsProcessor initilizeEventProcessorInstance() {
-		OpenAPIsOauthServerFacade openAPIsOauthServerFacade = initOAuthServerFacade();
-		
-		PublicSourcingApiFacade lAribaPublicSourcingFacade = initPublicSourcingFacade(openAPIsOauthServerFacade);
-		
-		return new PublicSourcingEventsProcessor(lAribaPublicSourcingFacade);
-	}
 
-	private static OpenAPIsOauthServerFacade initOAuthServerFacade() {
-		OpenApisOauthServerDestination openApisOauthServerDestination = new OpenApisOauthServerDestination(OpenApisOauthServerDestination.NAME);
-		try{
-			openApisOauthServerDestination.initializeDestination();
-		} catch (IllegalArgumentException e) {
-			//No OAuth destination found assuming sandbox environment
-			openApisOauthServerDestination = null;
-		}
-		
-		OpenAPIsOauthServerFacade openAPIsOauthServerFacade = null;
-		if(openApisOauthServerDestination != null){
-			openAPIsOauthServerFacade = new OpenAPIsOauthServerFacade(openApisOauthServerDestination.getAribaOpenApisOauthServerUrl(),
-																		openApisOauthServerDestination.getApplicationOauthClientId(), 
-																		openApisOauthServerDestination.getApplicationOauthClientSecret());
-		}
-		return openAPIsOauthServerFacade;
-	}
-
-	private static PublicSourcingApiFacade initPublicSourcingFacade(OpenAPIsOauthServerFacade openAPIsOauthServerFacade) {
-		PublicSourcingDestination aribaOpenApiDestination = new PublicSourcingDestination(PublicSourcingDestination.NAME);
-		aribaOpenApiDestination.initializeDestination();
-		
-		PublicSourcingApiFacade lAribaPublicSourcingFacade = new PublicSourcingApiFacade(aribaOpenApiDestination.getAribaUrl(), 
-																		aribaOpenApiDestination.getSiteId(), 
-																		aribaOpenApiDestination.getApiKey(),
-																		openAPIsOauthServerFacade);
-		return lAribaPublicSourcingFacade;
-	}
 }

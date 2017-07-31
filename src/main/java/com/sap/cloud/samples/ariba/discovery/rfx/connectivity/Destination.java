@@ -1,6 +1,7 @@
 package com.sap.cloud.samples.ariba.discovery.rfx.connectivity;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -11,7 +12,7 @@ import com.sap.core.connectivity.api.configuration.DestinationConfiguration;
 /**
  * Represents destination.
  */
-public class Destination {
+public abstract class Destination {
 
 	private static final String ERROR_PROPERTY_NOT_FOUND = "Property [{0}] not found in destination [ {1} ]. Hint: Make sure to have the property configured in the destination.";
 	private static final String ERROR_DESTINATION_PROPERTY_KEY_CANNOT_BE_NULL = "Destination property key cannot be null.";
@@ -32,7 +33,7 @@ public class Destination {
 		this.name = name;
 	}
 
-	public void initializeDestination() {
+	public void loadDestinationProperties() {
 		this.properties = retrieveDestinationProperties(name);
 	}
 
@@ -46,6 +47,13 @@ public class Destination {
 	}
 
 	/**
+	 * Returns all required properties.
+	 * 
+	 * @return all required destination properties.
+	 */
+	public abstract List<String> getRequiredProperties();
+
+	/**
 	 * Returns destination property value by specified destination property key.
 	 * 
 	 * @param propertyKey
@@ -53,7 +61,7 @@ public class Destination {
 	 * @return the value of the destination with the specified destination key.
 	 * @throws IllegalArgumentException
 	 *             when the property key is null or destination property with
-	 *             the specified key is not found.
+	 *             the specified key is required but not found.
 	 * @throws RuntimeException
 	 *             when connectivity configuration initialization has failed.
 	 */
@@ -64,7 +72,7 @@ public class Destination {
 
 		String propertyValue = properties.get(propertyKey);
 
-		if (propertyValue == null) {
+		if (propertyValue == null && getRequiredProperties().contains(propertyValue)) {
 			String errorMessage = MessageFormat.format(ERROR_PROPERTY_NOT_FOUND, propertyKey, name);
 			logger.error(errorMessage);
 			throw new IllegalArgumentException(errorMessage);

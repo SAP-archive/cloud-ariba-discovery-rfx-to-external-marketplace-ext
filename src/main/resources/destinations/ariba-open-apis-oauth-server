@@ -1,6 +1,0 @@
-Type=HTTP
-Name=ariba-open-apis-oauth-server
-URL=<SAP Ariba OpenAPIs OAuth Server URL e.g. https://api.ariba.com/v2/oauth/token>
-Authentication=BasicAuthentication
-User=<SAP Ariba OpenAPIs registered application OAuth Client ID>
-Password=<SAP Ariba Open APIs registered application OAuth Client Secret>
