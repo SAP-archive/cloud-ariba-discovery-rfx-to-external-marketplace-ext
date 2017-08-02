@@ -1,4 +1,4 @@
-# Ariba Public Sourcing
+# SAP Ariba Public Sourcing
 
 ## Content:
 
@@ -19,9 +19,9 @@
 
 ## Overview
 
-Ariba Public Sourcing is a sample extension application for [Ariba Network](https://www.ariba.com/) that runs on [SAP Cloud Platform](https://cloudplatform.sap.com/). The purpose of the application is to collect public sourcing events from Ariba Discovery via [SAP Ariba Open APIs](https://developer.ariba.com/api) and to display them in an application running on SAP Cloud Platform.
+SAP Ariba Public Sourcing is a sample extension application for [SAP Ariba Network](https://www.ariba.com/) that runs on [SAP Cloud Platform](https://cloudplatform.sap.com/). The purpose of the application is to collect public sourcing events from SAP Ariba Discovery via [SAP Ariba Open APIs](https://developer.ariba.com/api) and to display them in an application running on SAP Cloud Platform.
 
-The application uses the Discovery RFX Publication to External Marketplace API. You can run it either on enterprise, or trial [SAP Cloud Platform account](https://help.sap.com/viewer/65de2977205c403bbc107264b8eccf4b/Cloud/en-US/8ed4a705efa0431b910056c0acdbf377.html) in the [Neo environment](https://help.sap.com/viewer/65de2977205c403bbc107264b8eccf4b/Cloud/en-US/1a8ee4e7b27d4293af175f021db8ad9c.html).
+The application uses the Discovery RFx Publication to External Marketplace API. You can run it either on an enterprise, or a trial [SAP Cloud Platform account](https://help.sap.com/viewer/65de2977205c403bbc107264b8eccf4b/Cloud/en-US/8ed4a705efa0431b910056c0acdbf377.html) in the [Neo environment](https://help.sap.com/viewer/65de2977205c403bbc107264b8eccf4b/Cloud/en-US/1a8ee4e7b27d4293af175f021db8ad9c.html).
 
 These are the SAP Cloud Platform services and features in use:
 * [Connectivity service](https://help.hana.ondemand.com/help/frameset.htm?e54cc8fbbb571014beb5caaf6aa31280.html) - the application uses the Connectivity service to obtain connection to SAP Ariba Open APIs.
@@ -31,13 +31,13 @@ These are the SAP Cloud Platform services and features in use:
 
 ## Technical Details
 
-The Ariba Public Sourcing extension is a Java application that calls Ariba's Discovery RFX Publication to External Marketplace API and fetches all available public sourcing events. The events are persisted in a database and displayed in a SAPUI5 front-end.
+The SAP Ariba Public Sourcing extension is a Java application that calls SAP Ariba's Discovery RFx Publication to External Marketplace API and fetches all available public sourcing events. The events are persisted in a database and displayed in a SAPUI5 front-end.
 The events could be either fetched manually through the UI or automatically with a scheduler.
 
 To use this extension application, you need to:
 
 1. Register an SAP Ariba Open APIs application in [SAP Ariba Developer Portal](https://developer.ariba.com/api).
-2. Promote your registered application for production access. (optional, not required for working against SAP Ariba Open APIs sandbox environment)
+2. (Optional) Promote your registered application for production access. However, this is not required when working against SAP Ariba Open APIs sandbox environment.
 3. Build and deploy the Java extension application on SAP Cloud Platform.
 4. Configure the Java application connectivity.
 5. Start the Java extension application.
@@ -46,7 +46,6 @@ To use this extension application, you need to:
 
 ## Prerequisites
 
-You need to:
 * have an account for [SAP Ariba Developer Portal](https://developer.ariba.com/api)
 * have an [SAP Cloud Platform trial account](https://help.sap.com/viewer/65de2977205c403bbc107264b8eccf4b/Cloud/en-US/65d74d39cb3a4bf8910cd36ec54d2b99.html)
 * download or clone the project with Git
@@ -54,21 +53,21 @@ You need to:
 
 <a name="setup_ariba"/>
 
-## Register a Discovery RFX Publication to External Marketplace Application in SAP Ariba Developer Portal
+## Register a Discovery RFx Publication to External Marketplace Application in SAP Ariba Developer Portal
 
-You already have an account for SAP Ariba Developer Portal. Open the [guide](https://developer.ariba.com/api/guides) and follow the steps to register a new SAP Ariba Open APIs application that will be used against SAP Ariba Open APIs sandbox environment.
-At the end, you should have an application key related to the SAP Ariba Open APIs application. You will need it in order to call the Discovery RFX Publication to External Marketplace API, the sandbox environment.
+You should already have an account for SAP Ariba Developer Portal. Open this [guide](https://developer.ariba.com/api/guides) and follow the steps to register a new SAP Ariba Open APIs application that will be used against SAP Ariba Open APIs sandbox environment.
+At the end, you should have an application key related to the SAP Ariba Open APIs application. You will need it in order to call the Discovery RFx Publication to External Marketplace API in the sandbox environment.
 
 > *Production access:*
-When you want to work against production environment you should first [promote your application for production access](https://developer.ariba.com/api/guides).
-At the end, besides the application key, you will have a set of credentials (Service Provider user and Service Provider password) related to the registered SAP Ariba Open APIs application. You need them in order to call the Discovery RFX Publication to External Marketplace API production environment.
+When you want to work against a production environment you should first [promote your application for production access](https://developer.ariba.com/api/guides).
+At the end, besides the application key, you will have a set of credentials (Service Provider user and Service Provider password) related to the registered SAP Ariba Open APIs application. You need them in order to call the Discovery RFx Publication to External Marketplace API in the production environment.
 
 
 <a name="build_deploy"/>
 
 ## Build and Deploy the Application on SAP Cloud Platform
 
-You have already downloaded or cloned the Public Sourcing extension application. Now you have to build the application and deploy it on the SAP Cloud Platform. To do that, use one of the following tools:
+You have already downloaded or cloned the Public Sourcing extension application. Now you have to build the application and deploy it on SAP Cloud Platform. To do that, use one of the following tools:
 
 * SAP Cloud Platform Cockpit
 * Eclipse IDE
@@ -141,14 +140,14 @@ To deploy the application from Eclipse IDE, follow these steps:
 
 You need to create HTTP destination on the SAP Cloud Platform:
 * [Using Eclipse](https://help.sap.com/viewer/cca91383641e40ffbe03bdc78f00f681/Cloud/en-US/e520383cbb571014858bc5d52295f433.html)
-* [Using SAP Cloud Platform cockpit](https://help.sap.com/viewer/cca91383641e40ffbe03bdc78f00f681/Cloud/en-US/e520383cbb571014858bc5d52295f433.html)
+* [Using SAP Cloud Platform Cockpit](https://help.sap.com/viewer/cca91383641e40ffbe03bdc78f00f681/Cloud/en-US/e520383cbb571014858bc5d52295f433.html)
 
 
 You configure the destination according to the SAP Ariba Open APIs environment. 
 
 >Note: you can switch the environments by updating the created destination. You can find sample destinations in the resources folder.
 
-##### SAP Ariba Open APIs sandbox environment
+##### SAP Ariba Open APIs Sandbox Environment
    Use the following required properties:
 
                 Type: HTTP
@@ -162,7 +161,7 @@ You configure the destination according to the SAP Ariba Open APIs environment.
                 SiteId: <The unique site id. Enter random string in case of sandbox environment>
                 ApiKey: <SAP Ariba Open APIs application API key>
 
-##### SAP Ariba Open APIs production environment
+##### SAP Ariba Open APIs Production Environment
    Use the following required properties:
 
                 Type: HTTP
@@ -197,7 +196,7 @@ The automatic retrieving of sourcing events from SAP Ariba is commented out in t
 <a name="additional_information_resources"/>
 
 ### Resources
-* SAP Cloud Documentation - https://help.sap.com/viewer/product/CP/Cloud/en-US
+* SAP Cloud Platform Documentation - https://help.sap.com/viewer/product/CP/Cloud/en-US
 * SAP Ariba Open APIs - https://developer.ariba.com/api
 
 <a name="additional_information_license"/>
