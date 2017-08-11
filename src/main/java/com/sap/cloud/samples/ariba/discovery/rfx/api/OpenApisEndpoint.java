@@ -6,7 +6,9 @@ import java.nio.charset.StandardCharsets;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.Header;
 import org.apache.http.HttpHeaders;
+import org.apache.http.HttpHost;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -38,6 +40,7 @@ public class OpenApisEndpoint {
 	private static final Logger logger = LoggerFactory.getLogger(OpenApisEndpoint.class);
 
 	private String baseUri;
+	private HttpHost proxy;
 	private Header basicAuthorizationHeader;
 	private Header apikeyHeader;
 
@@ -46,6 +49,8 @@ public class OpenApisEndpoint {
 	 * 
 	 * @param baseUri
 	 *            base URI that will be called.
+	 * @param proxyType
+	 *            the proxy type.
 	 * @param serviceProviderUser
 	 *            the service provider user.
 	 * @param serviceProviderPassword
@@ -53,8 +58,10 @@ public class OpenApisEndpoint {
 	 * @param apiKey
 	 *            API key that will be used when calling the API.
 	 */
-	public OpenApisEndpoint(String baseUri, String serviceProviderUser, String serviceProviderPassword, String apiKey) {
+	public OpenApisEndpoint(String baseUri, String proxyType, String serviceProviderUser,
+			String serviceProviderPassword, String apiKey) {
 		this.baseUri = baseUri;
+		this.proxy = ProxyUtil.createProxy(proxyType);
 		this.basicAuthorizationHeader = getBasicAuthorizationHeader(serviceProviderUser, serviceProviderPassword);
 		this.apikeyHeader = getApikeyHeader(apiKey);
 	}
@@ -67,8 +74,9 @@ public class OpenApisEndpoint {
 	 * @param apiKey
 	 *            API key that will be used when calling the API.
 	 */
-	public OpenApisEndpoint(String baseUri, String apiKey) {
+	public OpenApisEndpoint(String baseUri, String proxyType, String apiKey) {
 		this.baseUri = baseUri;
+		this.proxy = ProxyUtil.createProxy(proxyType);
 		this.apikeyHeader = getApikeyHeader(apiKey);
 	}
 
@@ -112,6 +120,11 @@ public class OpenApisEndpoint {
 			httpGet.addHeader(basicAuthorizationHeader);
 		}
 		httpGet.addHeader(apikeyHeader);
+
+		if (proxy != null) {
+			RequestConfig requsetConfig = RequestConfig.custom().setProxy(proxy).build();
+			httpGet.setConfig(requsetConfig);
+		}
 
 		return httpGet;
 	}
@@ -172,6 +185,11 @@ public class OpenApisEndpoint {
 			httpPost.addHeader(basicAuthorizationHeader);
 		}
 		httpPost.addHeader(apikeyHeader);
+
+		if (proxy != null) {
+			RequestConfig requsetConfig = RequestConfig.custom().setProxy(proxy).build();
+			httpPost.setConfig(requsetConfig);
+		}
 
 		return httpPost;
 	}

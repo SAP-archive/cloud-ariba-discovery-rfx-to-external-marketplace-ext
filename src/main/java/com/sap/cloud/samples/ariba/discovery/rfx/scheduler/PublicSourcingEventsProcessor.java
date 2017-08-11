@@ -58,12 +58,14 @@ public class PublicSourcingEventsProcessor {
 
 		if (aribaPublicSourcingDestination.isBasicAuthentication()) {
 			publicSourcingApiFacade = new PublicSourcingApiFacade(aribaPublicSourcingDestination.getAribaUrl(),
-					aribaPublicSourcingDestination.getSiteId(), aribaPublicSourcingDestination.getServiceProviderUser(),
+					aribaPublicSourcingDestination.getProxyType(), aribaPublicSourcingDestination.getSiteId(),
+					aribaPublicSourcingDestination.getServiceProviderUser(),
 					aribaPublicSourcingDestination.getServiceProviderPassword(),
 					aribaPublicSourcingDestination.getApiKey());
 		} else {
 			publicSourcingApiFacade = new PublicSourcingApiFacade(aribaPublicSourcingDestination.getAribaUrl(),
-					aribaPublicSourcingDestination.getSiteId(), aribaPublicSourcingDestination.getApiKey());
+					aribaPublicSourcingDestination.getProxyType(), aribaPublicSourcingDestination.getSiteId(),
+					aribaPublicSourcingDestination.getApiKey());
 		}
 
 		return publicSourcingApiFacade;

@@ -42,6 +42,8 @@ public class PublicSourcingApiFacade {
 	 * 
 	 * @param aribaOpenApisEnvironmentUrl
 	 *            the URL of the Ariba OpenAPIs environment to be called.
+	 * @param proxyType
+	 *            the proxy type.
 	 * @param siteId
 	 *            the site ID.
 	 * @param serviceProviderUser
@@ -51,11 +53,10 @@ public class PublicSourcingApiFacade {
 	 * @param apiKey
 	 *            API key to be used for the API calls.
 	 */
-	public PublicSourcingApiFacade(String aribaOpenApisEnvironmentUrl, String siteId, String serviceProviderUser,
-			String serviceProviderPassword, String apiKey) {
+	public PublicSourcingApiFacade(String aribaOpenApisEnvironmentUrl, String proxyType, String siteId,
+			String serviceProviderUser, String serviceProviderPassword, String apiKey) {
 		this.siteId = siteId;
-
-		this.openApisEndpoint = new OpenApisEndpoint(aribaOpenApisEnvironmentUrl, serviceProviderUser,
+		this.openApisEndpoint = new OpenApisEndpoint(aribaOpenApisEnvironmentUrl, proxyType, serviceProviderUser,
 				serviceProviderPassword, apiKey);
 	}
 
@@ -64,15 +65,17 @@ public class PublicSourcingApiFacade {
 	 * 
 	 * @param aribaOpenApisEnvironmentUrl
 	 *            the URL of the Ariba OpenAPIs environment to be called.
+	 * @param proxyType
+	 *            the proxy type.
 	 * @param siteId
 	 *            the site ID.
 	 * @param apiKey
 	 *            API key to be used for the API calls.
 	 */
-	public PublicSourcingApiFacade(String aribaOpenApisEnvironmentUrl, String siteId, String apiKey) {
+	public PublicSourcingApiFacade(String aribaOpenApisEnvironmentUrl, String proxyType, String siteId, String apiKey) {
 		this.siteId = siteId;
 
-		this.openApisEndpoint = new OpenApisEndpoint(aribaOpenApisEnvironmentUrl, apiKey);
+		this.openApisEndpoint = new OpenApisEndpoint(aribaOpenApisEnvironmentUrl, proxyType, apiKey);
 	}
 
 	/**

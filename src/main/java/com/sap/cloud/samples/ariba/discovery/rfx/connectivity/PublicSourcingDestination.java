@@ -19,6 +19,7 @@ public class PublicSourcingDestination extends Destination {
 	private static final String SERVICE_PROVIDER_PASSWORD = "Password";
 	private static final String API_KEY = "ApiKey";
 	private static final String OPEN_API_ENVIRONMENT_URL = "URL";
+	private static final String PROXY_TYPE = "ProxyType";
 	private static final String JOB_INTERVAL_IN_SECONDS = "JobIntervalInSeconds";
 
 	private static final String ERROR_DESTINATION_PROPERTY_IS_NOT_VALID_INTEGER = "Destination property [{0}] is not valid integer.";
@@ -39,6 +40,10 @@ public class PublicSourcingDestination extends Destination {
 		requiredProperties.add(JOB_INTERVAL_IN_SECONDS);
 		
 		return requiredProperties;
+	}
+	
+	public String getProxyType() {
+		return getPropertyValue(PROXY_TYPE);
 	}
 
 	public String getAribaUrl() {
