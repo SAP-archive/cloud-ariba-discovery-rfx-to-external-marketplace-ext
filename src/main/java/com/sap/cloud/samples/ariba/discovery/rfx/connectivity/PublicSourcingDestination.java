@@ -55,7 +55,7 @@ public class PublicSourcingDestination extends Destination {
 	}
 
 	public boolean isBasicAuthentication() {
-		return getPropertyValue(AUTHENTICATION) == BASIC_AUTHENTICATION_VALUE;
+		return BASIC_AUTHENTICATION_VALUE.equals(getPropertyValue(AUTHENTICATION));
 	}
 
 	public String getServiceProviderUser() {
