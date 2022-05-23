@@ -18,7 +18,7 @@
 		<slf4j.version>1.7.7</slf4j.version>
 		<jackson.version>2.6.1</jackson.version>
 		<model.mapper.version>0.7.4</model.mapper.version>
-		<httpclient.version>4.3.6</httpclient.version>
+		<httpclient.version>4.5.13</httpclient.version>
 		<httpcore.version>4.3.2</httpcore.version>
 		<quartz.version>2.2.1</quartz.version>
 	</properties>
